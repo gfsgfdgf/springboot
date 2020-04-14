@@ -1,5 +1,6 @@
 package com.shi.springboot.controller;
 
+import com.shi.springboot.service.UserMapper;
 import com.shi.springboot.userBean.MySyuser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +21,9 @@ public class MyControllerTest {
     @Autowired
     private service service;
 
+    @Autowired
+    private UserMapper userMapper;
+
         @RequestMapping(value="/index")
         @ResponseBody
         public String myTest(@RequestParam Map<String, String> param, HttpServletRequest request){
@@ -33,11 +37,13 @@ public class MyControllerTest {
     @ResponseBody
     public List<MySyuser> fuzzyCUser(HttpServletRequest request) {
         Map<String,Object> result = new HashMap<>();
-        List<MySyuser>list =service.select(result);
+        // List<MySyuser>list =service.select(result);
+        List<MySyuser>list = userMapper.selectAll();
         //  result.put("list",list);
         request.getSession().setAttribute("LIST",list);
         //  return result;
         return list;
+
 
 
     }
