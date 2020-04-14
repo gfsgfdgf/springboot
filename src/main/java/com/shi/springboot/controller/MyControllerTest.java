@@ -2,11 +2,9 @@ package com.shi.springboot.controller;
 
 import com.shi.springboot.service.UserMapper;
 import com.shi.springboot.userBean.MySyuser;
+import com.shi.springboot.userBean.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 import javax.servlet.http.HttpServletRequest;
@@ -35,17 +33,40 @@ public class MyControllerTest {
 
     @RequestMapping(value = "/fu")
     @ResponseBody
-    public List<MySyuser> fuzzyCUser(HttpServletRequest request) {
+    public List<User> fuzzyCUser(HttpServletRequest request) {
         Map<String,Object> result = new HashMap<>();
         // List<MySyuser>list =service.select(result);
-        List<MySyuser>list = userMapper.selectAll();
+        List<User>list = userMapper.selectAll();
         //  result.put("list",list);
         request.getSession().setAttribute("LIST",list);
         //  return result;
         return list;
-
-
-
     }
 
+    @RequestMapping(value="/getone")
+    @GetMapping("{id}")
+    @ResponseBody
+    public String getone(@RequestParam String id){
+        User mysyuser = userMapper.selectOne(id);
+
+        return mysyuser+"";
+    }
+
+    @RequestMapping(value="/insert")
+    public String add(@RequestBody User user) {
+        userMapper.insert(user);
+        return "nice";
+    }
+
+    @RequestMapping(value="/update")
+    public String update(@RequestBody User user) {
+        userMapper.update(user);
+        return "update success";
+    }
+
+    @RequestMapping(value="/delete")
+    public String delete(@RequestParam String id) {
+        userMapper.delete(id);
+        return "delete success";
+    }
 }
